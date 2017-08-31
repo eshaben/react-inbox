@@ -1,4 +1,6 @@
-var messages = [
+import React from 'react';
+
+var messageList = [
   {
     "id": 1,
     "subject": "You can't input the protocol without calculating the mobile RSS protocol!",
@@ -59,4 +61,4 @@ var messages = [
   }
 ]
 
-module.exports = messages;
+export default messageList
