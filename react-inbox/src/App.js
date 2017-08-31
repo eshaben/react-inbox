@@ -7,16 +7,13 @@ import Message from './components/message.js';
 import Toolbar from './components/toolbar.js'
 
 
-
-
-class App extends Component {
+class App extends React.Component {
 
   render() {
     return (
       <div className="container">
         <Toolbar />
         <Messages messages={messageList}/>
-
       </div>
     );
   }
