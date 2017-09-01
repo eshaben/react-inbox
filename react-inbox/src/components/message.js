@@ -1,16 +1,16 @@
 import React from 'react';
 
 class Message extends React.Component{
+  check(){
+    this.props.check(this.props.message.id)
+  }
+
   render(){
     let message = this.props.message
 
     let readClass = 'row message';
-    if (this.props.message.read) {
-      readClass += ' read';
-      console.log("True");
-    } else {
-      readClass += ' unread';
-    }
+    readClass += message.read ? " read":" unread"
+
 
     let starred = 'star fa';
     if (message.starred) {
@@ -52,10 +52,10 @@ class Message extends React.Component{
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" checked={checked}/>
+              <input type="checkbox" checked={checked} onClick={this.check.bind(this)}/>
             </div>
             <div className="col-xs-2">
-              <i className={starred}></i>
+              <i onClick={this.props.toggle.bind(null, this.props.message.id)} className={message.starred ? "star fa fa-star": "star fa fa-star-o"}></i>
             </div>
           </div>
         </div>

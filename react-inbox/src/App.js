@@ -9,11 +9,63 @@ import Toolbar from './components/toolbar.js'
 
 class App extends React.Component {
 
+  state = {messages: messageList}
+
+  toggle(id){
+    const newMessages = this.state.messages.map(message => {
+      if(message.id === id){
+        message.starred = !message.starred
+      }
+      return message;
+    })
+    this.setState({
+      ...this.state,
+      messages: newMessages
+    })
+  }
+
+  check(id){
+    const newMessages = this.state.messages.map(message => {
+      if(message.id === id){
+        message.selected = !message.selected
+      }
+      return message;
+    })
+    this.setState({
+      ...this.state,
+      messages: newMessages
+    })
+  }
+
+  checkAll(){
+    let checked = true
+    let totalChecked = 0
+    this.state.messages.forEach(message => {
+      if(message.selected){
+        totalChecked++
+      }
+    })
+    if(totalChecked === this.state.messages.length){
+      checked = false
+    }
+    const newMessages = this.state.messages.map(message => {
+      message.selected = checked
+      return message;
+    })
+    this.setState({
+      ...this.state,
+      messages: newMessages
+    })
+  }
+
   render() {
     return (
       <div className="container">
-        <Toolbar />
-        <Messages messages={messageList}/>
+        <Toolbar checkAll={this.checkAll.bind(this)}
+                  messages={this.state.messages}/>
+        <Messages messages={this.state.messages}
+                    toggle={this.toggle.bind(this)}
+                     check={this.check.bind(this)}/>
       </div>
     );
   }
