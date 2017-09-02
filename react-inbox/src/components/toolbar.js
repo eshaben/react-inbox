@@ -33,6 +33,7 @@ const Toolbar = (props) => {
   })
   if(counter ===0){
     disabled = 'disabled'
+    checkAllClass = none
   }
   if(counter === 1){
     unreadMessages = 'unread message'
