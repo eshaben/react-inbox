@@ -97,14 +97,50 @@ class App extends React.Component {
     })
   }
 
+  addLabel(e){
+    console.log(e.target.value);
+    const newMessages = this.state.messages.map((message) => {
+      if(message.selected){
+        message.labels.push(e.target.value)
+      }
+      return message;
+    })
+    this.setState({
+      ...this.state,
+      messages: newMessages
+    })
+  }
+
+  removeLabel(e){
+    console.log(e.target.value);
+    let labels = []
+    const newMessages = this.state.messages.map((message) => {
+      if(message.selected){
+        for(var i=0; i<message.labels.length; i++){
+          if(message.labels[i] !== e.target.value){
+          labels.push(message.labels[i])
+          }
+        }
+        message.labels = labels
+      }
+      return message;
+    })
+    this.setState({
+      ...this.state,
+      messages: newMessages
+    })
+  }
+
   render() {
     return (
       <div className="container">
         <Toolbar checkAll={this.checkAll.bind(this)}
                  messages={this.state.messages}
                     read ={this.read.bind(this)}
-                    unread ={this.unread.bind(this)}
-                    deleteMessage = {this.deleteMessage.bind(this)}/>
+                  unread ={this.unread.bind(this)}
+           deleteMessage = {this.deleteMessage.bind(this)}
+                addLabel = {this.addLabel.bind(this)}
+              removeLabel= {this.removeLabel.bind(this)}/>
        <Messages messages={this.state.messages}
                    toggle={this.toggle.bind(this)}
                     check={this.check.bind(this)}/>
