@@ -59,7 +59,7 @@ class App extends React.Component {
   }
 
   read(){
-    const newMessages = this.state.messages.map((message, i) => {
+    const newMessages = this.state.messages.map((message) => {
       if(message.selected){
         message.read = true
       }
@@ -74,7 +74,7 @@ class App extends React.Component {
   unread(){
     const newMessages = this.state.messages.map((message) => {
       if(message.selected){
-        message.read = 'false'
+        message.read = false
       }
       return message;
     })

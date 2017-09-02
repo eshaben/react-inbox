@@ -23,7 +23,12 @@ const Toolbar = (props) => {
     checkAllClass = some
   }
 
-  let counter = props.messages.length
+  let counter = 0
+  props.messages.forEach(message => {
+    if(!message.read){
+      counter++
+    }
+  })
 
   return (
   <div className="row toolbar">
