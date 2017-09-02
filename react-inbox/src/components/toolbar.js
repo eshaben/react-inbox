@@ -24,18 +24,24 @@ const Toolbar = (props) => {
   }
 
   let counter = 0
+  let unreadMessages = ''
   props.messages.forEach(message => {
     if(!message.read){
       counter++
     }
   })
+  if(counter === 1){
+    unreadMessages = 'unread message'
+  } else {
+    unreadMessages = 'unread messages'
+  }
 
   return (
   <div className="row toolbar">
     <div className="col-md-12">
       <p className="pull-right">
         <span className="badge badge">{counter}</span>
-        unread messages
+        {unreadMessages}
       </p>
 
       <button className="btn btn-default" onClick={props.checkAll}>
