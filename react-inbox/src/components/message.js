@@ -47,6 +47,7 @@ class Message extends React.Component{
       }
     }
 
+
     return (
       <div className={readClass} >
         <div className="col-xs-1">

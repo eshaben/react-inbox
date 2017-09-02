@@ -58,14 +58,42 @@ class App extends React.Component {
     })
   }
 
+  read(id){
+    const newMessages = this.state.messages.map((message, i) => {
+      if(message.selected){
+        message.read = true
+      }
+      return message;
+    })
+    this.setState({
+      ...this.state,
+      messages: newMessages
+    })
+  }
+
+  unread(id){
+    const newMessages = this.state.messages.map((message, i) => {
+      if(message.selected){
+        message.read = false
+      }
+      return message;
+    })
+    this.setState({
+      ...this.state,
+      messages: newMessages
+    })
+  }
+
   render() {
     return (
       <div className="container">
         <Toolbar checkAll={this.checkAll.bind(this)}
-                  messages={this.state.messages}/>
-        <Messages messages={this.state.messages}
-                    toggle={this.toggle.bind(this)}
-                     check={this.check.bind(this)}/>
+                 messages={this.state.messages}
+                    read ={this.read.bind(this)}
+                    unread ={this.unread.bind(this)}/>
+       <Messages messages={this.state.messages}
+                   toggle={this.toggle.bind(this)}
+                    check={this.check.bind(this)}/>
       </div>
     );
   }

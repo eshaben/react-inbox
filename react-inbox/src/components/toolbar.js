@@ -6,6 +6,7 @@ const Toolbar = (props) => {
   const none = 'fa fa-square-o'
 
   let checkAllClass=''
+  let readAllClass=''
 
   let checked = 0
   props.messages.forEach(message => {
@@ -33,11 +34,11 @@ const Toolbar = (props) => {
         <i className={checkAllClass}></i>
       </button>
 
-      <button className="btn btn-default">
+      <button className="btn btn-default" onClick={props.read}>
         Mark As Read
       </button>
 
-      <button className="btn btn-default">
+      <button className="btn btn-default" onClick={props.unread}>
         Mark As Unread
       </button>
 
