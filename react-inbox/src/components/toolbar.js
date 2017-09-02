@@ -31,7 +31,6 @@ const Toolbar = (props) => {
     }
   })
   if(counter ===0){
-    disabled = 'disabled'
     checkAllClass = none
   }
   if(counter === 1){
@@ -40,6 +39,9 @@ const Toolbar = (props) => {
     unreadMessages = 'unread messages'
   }
 
+  if(props.messages.length === 0){
+    disabled = ' disabled'
+  }
 
   return (
   <div className="row toolbar">
