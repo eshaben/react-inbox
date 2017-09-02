@@ -14,6 +14,7 @@ const Toolbar = (props) => {
       checked++
     }
   })
+  console.log(checked);
   if (checked === props.messages.length){
     checkAllClass = all
   } else if (checked === 0){
@@ -22,11 +23,13 @@ const Toolbar = (props) => {
     checkAllClass = some
   }
 
+  let counter = props.messages.length
+
   return (
   <div className="row toolbar">
     <div className="col-md-12">
       <p className="pull-right">
-        <span className="badge badge">2</span>
+        <span className="badge badge">{counter}</span>
         unread messages
       </p>
 
@@ -56,7 +59,7 @@ const Toolbar = (props) => {
         <option value="gschool">gschool</option>
       </select>
 
-      <button className="btn btn-default">
+      <button className="btn btn-default" onClick={props.deleteMessage}>
         <i className="fa fa-trash-o"></i>
       </button>
     </div>

@@ -58,7 +58,7 @@ class App extends React.Component {
     })
   }
 
-  read(id){
+  read(){
     const newMessages = this.state.messages.map((message, i) => {
       if(message.selected){
         message.read = true
@@ -71,12 +71,25 @@ class App extends React.Component {
     })
   }
 
-  unread(id){
-    const newMessages = this.state.messages.map((message, i) => {
+  unread(){
+    const newMessages = this.state.messages.map((message) => {
       if(message.selected){
-        message.read = false
+        message.read = 'false'
       }
       return message;
+    })
+    this.setState({
+      ...this.state,
+      messages: newMessages
+    })
+  }
+
+  deleteMessage(){
+    const newMessages = []
+    this.state.messages.map((message) => {
+      if(!message.selected){
+        newMessages.push(message)
+      }
     })
     this.setState({
       ...this.state,
@@ -90,7 +103,8 @@ class App extends React.Component {
         <Toolbar checkAll={this.checkAll.bind(this)}
                  messages={this.state.messages}
                     read ={this.read.bind(this)}
-                    unread ={this.unread.bind(this)}/>
+                    unread ={this.unread.bind(this)}
+                    deleteMessage = {this.deleteMessage.bind(this)}/>
        <Messages messages={this.state.messages}
                    toggle={this.toggle.bind(this)}
                     check={this.check.bind(this)}/>
