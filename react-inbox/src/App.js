@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import messageList from './data/messages.js'
 
 import Messages from './components/messages.js';
 import Message from './components/message.js';
@@ -9,7 +8,17 @@ import Toolbar from './components/toolbar.js'
 
 class App extends React.Component {
 
-  state = {messages: messageList}
+  state = {
+    messages: [],
+  }
+
+  async componentDidMount(){
+    const response = await fetch('http://localhost:8082/api/messages')
+    const json = await response.json()
+    this.setState({
+      messages: json._embedded.messages
+    })
+  }
 
   toggle(id){
     const newMessages = this.state.messages.map(message => {
