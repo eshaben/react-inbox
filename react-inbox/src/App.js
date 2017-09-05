@@ -167,7 +167,6 @@ class App extends React.Component {
         newMessages.push(message)
       } else {
         messageIds.push(message.id)
-
       }
     })
     const body = {
@@ -193,24 +192,47 @@ class App extends React.Component {
   }
 
   addLabel(e){
-    console.log(e.target.value);
+    let messageIds = []
+    let label = ''
     const newMessages = this.state.messages.map((message) => {
       if(message.selected){
         message.labels.push(e.target.value)
+        messageIds.push(message.id)
+        label = e.target.value
       }
       return message;
     })
-    this.setState({
-      ...this.state,
-      messages: newMessages
-    })
+    const body = {
+      "messageIds" : messageIds,
+      "command": "addLabel",
+      "label": label
+    }
+    const settings = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }
+    fetch('http://localhost:8082/api/messages', settings)
+      .then(response => {
+        console.log(response);
+        if(response.ok){
+          this.setState({
+            ...this.state,
+            messages: newMessages
+          })
+        }
+      })
   }
 
   removeLabel(e){
-    console.log(e.target.value);
+    let messageIds = []
     let labels = []
+    let label = e.target.value
     const newMessages = this.state.messages.map((message) => {
       if(message.selected){
+        messageIds.push(message.id)
         for(var i=0; i<message.labels.length; i++){
           if(message.labels[i] !== e.target.value){
           labels.push(message.labels[i])
@@ -220,10 +242,28 @@ class App extends React.Component {
       }
       return message;
     })
-    this.setState({
-      ...this.state,
-      messages: newMessages
-    })
+    const body = {
+      "messageIds" : messageIds,
+      "command": "removeLabel",
+      "label": label
+    }
+    const settings = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }
+    fetch('http://localhost:8082/api/messages', settings)
+      .then(response => {
+        console.log(response);
+        if(response.ok){
+          this.setState({
+            ...this.state,
+            messages: newMessages
+          })
+        }
+      })
   }
 
   render() {
