@@ -118,7 +118,6 @@ class App extends React.Component {
     }
     fetch('http://localhost:8082/api/messages', settings)
       .then(response => {
-        console.log(response);
         if(response.ok){
           this.setState({
             ...this.state,
@@ -129,16 +128,35 @@ class App extends React.Component {
   }
 
   unread(){
+    let messageIds = []
     const newMessages = this.state.messages.map((message) => {
       if(message.selected){
         message.read = false
+        messageIds.push(message.id)
       }
       return message;
     })
-    this.setState({
-      ...this.state,
-      messages: newMessages
-    })
+    const body = {
+      "messageIds" : messageIds,
+      "command": "read",
+      "read": false
+    }
+    const settings = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }
+    fetch('http://localhost:8082/api/messages', settings)
+      .then(response => {
+        if(response.ok){
+          this.setState({
+            ...this.state,
+            messages: newMessages
+          })
+        }
+      })
   }
 
   deleteMessage(){
