@@ -160,16 +160,36 @@ class App extends React.Component {
   }
 
   deleteMessage(){
+    let messageIds = []
     const newMessages = []
     this.state.messages.map((message) => {
       if(!message.selected){
         newMessages.push(message)
+      } else {
+        messageIds.push(message.id)
+
       }
     })
-    this.setState({
-      ...this.state,
-      messages: newMessages
-    })
+    const body = {
+      "messageIds" : messageIds,
+      "command": "delete"
+    }
+    const settings = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }
+    fetch('http://localhost:8082/api/messages', settings)
+      .then(response => {
+        if(response.ok){
+          this.setState({
+            ...this.state,
+            messages: newMessages
+          })
+        }
+      })
   }
 
   addLabel(e){
