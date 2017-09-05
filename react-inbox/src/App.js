@@ -13,24 +13,51 @@ class App extends React.Component {
   }
 
   async componentDidMount(){
-    const response = await fetch('http://localhost:8082/api/messages')
-    const json = await response.json()
-    this.setState({
-      messages: json._embedded.messages
-    })
+    try {
+      const response = await fetch('http://localhost:8082/api/messages')
+      const json = await response.json()
+      this.setState({
+        messages: json._embedded.messages
+      })
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   toggle(id){
-    const newMessages = this.state.messages.map(message => {
+    let starred;
+    this.state.messages.forEach(message => {
       if(message.id === id){
-        message.starred = !message.starred
+        starred = !message.starred
       }
-      return message;
     })
-    this.setState({
-      ...this.state,
-      messages: newMessages
-    })
+    const body = {
+      "messageIds" : [id],
+      "command": "star",
+      "star": starred
+    }
+    const settings = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }
+    fetch('http://localhost:8082/api/messages', settings)
+      .then(response => {
+        if (response.ok){
+          const newMessages = this.state.messages.map(message => {
+            if(message.id === id){
+              message.starred = !message.starred
+            }
+            return message;
+          })
+          this.setState({
+            ...this.state,
+            messages: newMessages
+          })
+        }
+      })
   }
 
   check(id){
@@ -68,16 +95,37 @@ class App extends React.Component {
   }
 
   read(){
+    let messageIds = []
     const newMessages = this.state.messages.map((message) => {
       if(message.selected){
         message.read = true
+        messageIds.push(message.id)
       }
       return message;
     })
-    this.setState({
-      ...this.state,
-      messages: newMessages
-    })
+
+    const body = {
+      "messageIds" : messageIds,
+      "command": "read",
+      "read": true
+    }
+    const settings = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }
+    fetch('http://localhost:8082/api/messages', settings)
+      .then(response => {
+        console.log(response);
+        if(response.ok){
+          this.setState({
+            ...this.state,
+            messages: newMessages
+          })
+        }
+      })
   }
 
   unread(){
