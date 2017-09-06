@@ -11,7 +11,9 @@ class App extends React.Component {
 
   state = {
     messages: [],
-    showForm: false
+    showForm: false,
+    body: '',
+    subject: ''
   }
 
   async componentDidMount(){
@@ -269,8 +271,6 @@ class App extends React.Component {
   }
 
   toggleForm(){
-    console.log("clicked");
-    console.log(this.state.showForm);
     if(this.state.showForm === false){
       this.setState({
         ...this.state,
@@ -284,6 +284,40 @@ class App extends React.Component {
     }
   }
 
+  async submitMessage(e){
+    e.preventDefault()
+    const body = {
+      subject: this.state.subject,
+      body: this.state.body
+    }
+    const response = await fetch('http://localhost:8082/api/messages', {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    const json = await response.json()
+    this.setState({
+      messages: [...this.state.messages, json]
+    })
+
+  }
+
+  getBody(e){
+    this.setState({
+      body: e.target.value
+    })
+  }
+
+  getSubject(e){
+    console.log(e.target.value);
+    this.setState({
+      subject: e.target.value
+    })
+  }
+
   render() {
     return (
       <div className="container">
@@ -295,7 +329,10 @@ class App extends React.Component {
            deleteMessage = {this.deleteMessage.bind(this)}
                 addLabel = {this.addLabel.bind(this)}
               removeLabel= {this.removeLabel.bind(this)} />
-     <AddMessage showForm={this.state.showForm} />
+     <AddMessage showForm={this.state.showForm}
+            submitMessage={this.submitMessage.bind(this)}
+                  getBody={this.getBody.bind(this)}
+               getSubject={this.getSubject.bind(this)}/>
        <Messages messages={this.state.messages}
                    toggle={this.toggle.bind(this)}
                     check={this.check.bind(this)} />
