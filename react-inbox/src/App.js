@@ -3,13 +3,15 @@ import './App.css';
 
 import Messages from './components/messages.js';
 import Message from './components/message.js';
-import Toolbar from './components/toolbar.js'
+import Toolbar from './components/toolbar.js';
+import AddMessage from './components/addMessage.js'
 
 
 class App extends React.Component {
 
   state = {
     messages: [],
+    showForm: false
   }
 
   async componentDidMount(){
@@ -266,19 +268,37 @@ class App extends React.Component {
       })
   }
 
+  toggleForm(){
+    console.log("clicked");
+    console.log(this.state.showForm);
+    if(this.state.showForm === false){
+      this.setState({
+        ...this.state,
+        showForm: true
+      })
+    } else {
+      this.setState({
+        ...this.state,
+        showForm: false
+      })
+    }
+  }
+
   render() {
     return (
       <div className="container">
         <Toolbar checkAll={this.checkAll.bind(this)}
+                 toggleForm={this.toggleForm.bind(this)}
                  messages={this.state.messages}
                     read ={this.read.bind(this)}
                   unread ={this.unread.bind(this)}
            deleteMessage = {this.deleteMessage.bind(this)}
                 addLabel = {this.addLabel.bind(this)}
-              removeLabel= {this.removeLabel.bind(this)}/>
+              removeLabel= {this.removeLabel.bind(this)} />
+     <AddMessage showForm={this.state.showForm} />
        <Messages messages={this.state.messages}
                    toggle={this.toggle.bind(this)}
-                    check={this.check.bind(this)}/>
+                    check={this.check.bind(this)} />
       </div>
     );
   }
