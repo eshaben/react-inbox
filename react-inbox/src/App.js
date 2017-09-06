@@ -274,17 +274,18 @@ class App extends React.Component {
     if(this.state.showForm === false){
       this.setState({
         ...this.state,
-        showForm: true
+        showForm: true,
       })
     } else {
       this.setState({
         ...this.state,
-        showForm: false
+        showForm: false,
       })
     }
   }
 
   async submitMessage(e){
+    console.log(e.target.value);
     e.preventDefault()
     const body = {
       subject: this.state.subject,
@@ -300,9 +301,11 @@ class App extends React.Component {
     })
     const json = await response.json()
     this.setState({
-      messages: [...this.state.messages, json]
+      messages: [...this.state.messages, json],
+      showForm: false,
+      body: '',
+      subject: ''
     })
-
   }
 
   getBody(e){
